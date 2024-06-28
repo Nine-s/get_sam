@@ -76,22 +76,22 @@ process HISAT2_ALIGN {
     output:
     tuple val(sample_name), path("${sample_name}*.sam"), emit: sample_sam 
 
-    shell:
-    '''
-    if [[ (params.strand == "firststrand") ]]; then
+    script:
+    """
+    if [[ (${params.strand} == "firststrand") ]]; then
     
-        hisat2 -x !{reference.baseName} -1 !{reads[0]} -2 !{reads[1]} --new-summary --summary-file !{sample_name}_summary.log --thread !{params.threads} --dta-cufflinks --rna-strandness FR -S !{sample_name}.sam
+        hisat2 -x ${reference.baseName} -1 ${reads[0]} -2 ${reads[1]} --new-summary --summary-file ${sample_name}_summary.log --thread ${params.threads} --dta-cufflinks --rna-strandness FR -S ${sample_name}.sam
 
-    elif [[ (params.strand == "secondstrand") ]]; then
+    elif [[ (${params.strand} == "secondstrand") ]]; then
     
-        hisat2 -x !{reference.baseName} -1 !{reads[0]} -2 !{reads[1]} --new-summary --summary-file !{sample_name}_summary.log --thread !{params.threads} --dta-cufflinks --rna-strandness RF -S !{sample_name}.sam
+        hisat2 -x ${reference.baseName} -1 ${reads[0]} -2 ${reads[1]} --new-summary --summary-file ${sample_name}_summary.log --thread ${params.threads} --dta-cufflinks --rna-strandness RF -S ${sample_name}.sam
 
-    elif [[ params.strand == "unstranded" ]]; then
+    elif [[ ${params.strand} == "unstranded" ]]; then
        
-        hisat2 -x !{reference.baseName} -1 !{reads[0]} -2 !{reads[1]} --new-summary --summary-file !{sample_name}_summary.log --thread !{params.threads} --dta-cufflinks -S !{sample_name}.sam
+        hisat2 -x ${reference.baseName} -1 ${reads[0]} -2 ${reads[1]} --new-summary --summary-file ${sample_name}_summary.log --thread ${params.threads} --dta-cufflinks -S ${sample_name}.sam
     else  
-		echo params.strand > error_strandness.txt
+		echo ${params.strand} > error_strandness.txt
 		echo "strandness cannot be determined" >> error_strandness.txt
 	fi
-    '''   
+    """   
 }
