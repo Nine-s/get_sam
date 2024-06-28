@@ -1,4 +1,5 @@
 process SAMTOOLS {
+    container "biocontainers/samtools:v1.7.0_cv4"
     label 'samtools'
     publishDir params.outdir
     
@@ -16,6 +17,7 @@ process SAMTOOLS {
 }
 
 process SAMTOOLS_MERGE {
+    container "biocontainers/samtools:v1.7.0_cv4"
     label 'samtools'
     publishDir params.outdir
 

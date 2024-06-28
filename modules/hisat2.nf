@@ -15,6 +15,7 @@ process EXTRACT_EXONS {
 
 process EXTRACT_SPLICE_SITES {
     label 'python'
+    container 'biocontainers/hisat2:v2.0.5-1-deb_cv1'
 
     input:
     path(annotation)
@@ -29,6 +30,7 @@ process EXTRACT_SPLICE_SITES {
 }
 
 process HISAT2_INDEX_REFERENCE {
+    container 'biocontainers/hisat2:v2.0.5-1-deb_cv1'
     label 'hisat2'
     publishDir params.outdir
 
@@ -47,6 +49,7 @@ process HISAT2_INDEX_REFERENCE {
 }
 
 process HISAT2_INDEX_REFERENCE_MINIMAL {
+    container 'biocontainers/hisat2:v2.0.5-1-deb_cv1'
     label 'hisat2'
     publishDir params.outdir
 
@@ -62,6 +65,7 @@ process HISAT2_INDEX_REFERENCE_MINIMAL {
     """
 }
 process HISAT2_ALIGN {
+    container 'biocontainers/hisat2:v2.0.5-1-deb_cv1'
     label 'hisat2'
     publishDir params.outdir
  
