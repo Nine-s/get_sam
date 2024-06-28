@@ -10,9 +10,13 @@ include { CUFFLINKS } from './modules/cufflinks.nf'
 params.outdir = 'results'
 
 workflow {
-
-    read_pairs_ch = channel.fromFilePairs( params.reads, checkIfExists: true ) 
-    CHECK_STRANDNESS( read_pairs_ch, params.reference_cdna, params.reference_annotation_ensembl )
+    
+        read_pairs_ch = Channel
+            .fromPath( params.csv_input )
+            .splitCsv(header: true, sep: ',')
+            .map {row -> tuple(row.sample, [row.path_r1, row.path_r2], row.condition)}
+            .view()
+    //CHECK_STRANDNESS( read_pairs_ch, params.reference_cdna, params.reference_annotation_ensembl )
     HISAT2_INDEX_REFERENCE_MINIMAL( params.reference_genome )
     HISAT2_ALIGN( read_pairs_ch, HISAT2_INDEX_REFERENCE_MINIMAL.out, CHECK_STRANDNESS.out.first() )    
     //FASTP( read_pairs_ch )
